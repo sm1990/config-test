@@ -1,7 +1,4 @@
-import ballerina/log;
-
-import icptest/automation_ui_config_test.auth;
-import icptest/automation_ui_config_test.messaging;
+import ballerina/io;
 
 # Enum-like mode values so generated schema can expose a dropdown/select.
 public type Mode "DEV"|"TEST"|"PROD";
@@ -26,6 +23,28 @@ public type Endpoint record {|
     string url;
     @display {label: "Timeout (seconds)"}
     int timeout;
+|};
+
+# Grouped auth config kept in the root module for better builder compatibility.
+@display {label: "Auth"}
+public type AuthConfig record {|
+    @display {label: "Username"}
+    string username;
+    @display {label: "Password", kind: "password"}
+    string password;
+    @display {label: "Client ID"}
+    string clientId;
+    @display {label: "Client Secret", kind: "password"}
+    string clientSecret?;
+|};
+
+# Grouped messaging config kept in the root module for better builder compatibility.
+@display {label: "Messaging"}
+public type MessagingConfig record {|
+    @display {label: "Queue Name"}
+    string queueName;
+    @display {label: "Topic Name"}
+    string topicName?;
 |};
 
 # 1. Required top-level configs.
@@ -84,30 +103,37 @@ configurable string|int correlationKey = "auto";
 @display {label: "Audience"}
 configurable string|string[] audience = "icp-ui-test";
 
+# 10/11. Grouped config values that are friendly for config-group linking.
+@display {label: "Auth"}
+configurable AuthConfig auth = {username: "", password: "", clientId: ""};
+
+@display {label: "Messaging"}
+configurable MessagingConfig messaging = {queueName: ""};
+
 public function main() returns error? {
-    log:printInfo("ICP automation configuration UI test started");
-    log:printInfo(string `Startup summary: enabled=${enabled}, mode=${mode}, region=${region}, retryCount=${retryCount}, threshold=${threshold}`);
+    printInfo("ICP automation configuration UI test started");
+    printInfo(string `Startup summary: enabled=${enabled}, mode=${mode}, region=${region}, retryCount=${retryCount}, threshold=${threshold}`);
 
-    log:printInfo(string `message=${message}`);
-    log:printInfo(string `apiKey(masked)=${maskSecret(apiKey)}`);
-    log:printInfo(string `correlationKey=${correlationKey.toString()}`);
-    log:printInfo(string `audience=${audience.toString()}`);
+    printInfo(string `message=${message}`);
+    printInfo(string `apiKey(masked)=${maskSecret(apiKey)}`);
+    printInfo(string `correlationKey=${correlationKey.toString()}`);
+    printInfo(string `audience=${audience.toString()}`);
 
-    log:printInfo(string `targetService=${targetService.toString()}`);
-    log:printInfo(string `labels=${labels.toString()}`);
-    log:printInfo(string `limits=${limits.toString()}`);
-    log:printInfo(string `recipients=${recipients.toString()}`);
-    log:printInfo(string `backoffSeconds=${backoffSeconds.toString()}`);
-    log:printInfo(string `endpoints=${endpoints.toString()}`);
+    printInfo(string `targetService=${targetService.toString()}`);
+    printInfo(string `labels=${labels.toString()}`);
+    printInfo(string `limits=${limits.toString()}`);
+    printInfo(string `recipients=${recipients.toString()}`);
+    printInfo(string `backoffSeconds=${backoffSeconds.toString()}`);
+    printInfo(string `endpoints=${endpoints.toString()}`);
 
-    log:printInfo(string `auth.username=${auth:username}`);
-    log:printInfo(string `auth.password(masked)=${maskSecret(auth:password)}`);
-    log:printInfo(string `auth.clientId=${auth:clientId}`);
-    log:printInfo(string `auth.clientSecret(masked)=${maskSecret(auth:clientSecret)}`);
-    log:printInfo(string `messaging.queueName=${messaging:queueName}`);
-    log:printInfo(string `messaging.topicName=${messaging:topicName}`);
+    printInfo(string `auth.username=${auth.username}`);
+    printInfo(string `auth.password(masked)=${maskSecret(auth.password)}`);
+    printInfo(string `auth.clientId=${auth.clientId}`);
+    printInfo(string `auth.clientSecret(masked)=${maskSecret(auth.clientSecret ?: "")}`);
+    printInfo(string `messaging.queueName=${messaging.queueName}`);
+    printInfo(string `messaging.topicName=${messaging.topicName ?: ""}`);
 
-    log:printInfo("Configuration logging complete");
+    printInfo("Configuration logging complete");
 }
 
 function maskSecret(string value) returns string {
@@ -130,4 +156,8 @@ function repeatedMask(int count) returns string {
         mask += "*";
     }
     return mask;
+}
+
+function printInfo(string message) {
+    io:println(string `[INFO] ${message}`);
 }

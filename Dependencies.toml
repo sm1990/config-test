@@ -15,6 +15,9 @@ dependencies = [
 	{org = "ballerina", name = "jballerina.java"},
 	{org = "ballerina", name = "lang.value"}
 ]
+modules = [
+	{org = "ballerina", packageName = "io", moduleName = "io"}
+]
 
 [[package]]
 org = "ballerina"
@@ -30,33 +33,11 @@ dependencies = [
 ]
 
 [[package]]
-org = "ballerina"
-name = "log"
-version = "2.17.0"
-dependencies = [
-	{org = "ballerina", name = "io"},
-	{org = "ballerina", name = "jballerina.java"},
-	{org = "ballerina", name = "lang.value"},
-	{org = "ballerina", name = "observe"}
-]
-modules = [
-	{org = "ballerina", packageName = "log", moduleName = "log"}
-]
-
-[[package]]
-org = "ballerina"
-name = "observe"
-version = "1.7.0"
-dependencies = [
-	{org = "ballerina", name = "jballerina.java"}
-]
-
-[[package]]
 org = "icptest"
 name = "automation_ui_config_test"
 version = "0.1.0"
 dependencies = [
-	{org = "ballerina", name = "log"}
+	{org = "ballerina", name = "io"}
 ]
 modules = [
 	{org = "icptest", packageName = "automation_ui_config_test", moduleName = "automation_ui_config_test"},

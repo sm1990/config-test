@@ -2,7 +2,7 @@
   "$schema": "https://json-schema.org/draft/2020-12/schema",
   "title": "ICP Automation UI Configuration Test Schema",
   "type": "object",
-  "description": "Companion schema for the Ballerina configurable surface in this sample project. Module names are preserved as UI group keys.",
+  "description": "Companion schema for the Ballerina configurable surface in this sample project. The layout is flattened into one root module for Choreo-builder compatibility while preserving grouped auth and messaging sections as nested objects.",
   "properties": {
     "icptest/automation_ui_config_test": {
       "type": "object",
@@ -160,72 +160,66 @@
               }
             }
           ]
+        },
+        "auth": {
+          "type": "object",
+          "title": "Auth",
+          "description": "10. Grouped section with required and optional auth/linking fields.",
+          "properties": {
+            "username": {
+              "type": "string",
+              "title": "Username",
+              "description": "11. Config-group-linking friendly field."
+            },
+            "password": {
+              "type": "string",
+              "title": "Password",
+              "description": "11. Config-group-linking friendly secret field.",
+              "format": "password",
+              "writeOnly": true,
+              "x-sensitive": true
+            },
+            "clientId": {
+              "type": "string",
+              "title": "Client ID",
+              "description": "11. Config-group-linking friendly field."
+            },
+            "clientSecret": {
+              "type": "string",
+              "title": "Client Secret",
+              "description": "11. Optional config-group-linking friendly secret field.",
+              "format": "password",
+              "writeOnly": true,
+              "x-sensitive": true
+            }
+          },
+          "required": ["username", "password", "clientId"],
+          "additionalProperties": false
+        },
+        "messaging": {
+          "type": "object",
+          "title": "Messaging",
+          "description": "10. Grouped section with required and optional messaging fields.",
+          "properties": {
+            "queueName": {
+              "type": "string",
+              "title": "Queue Name",
+              "description": "11. Config-group-linking friendly field."
+            },
+            "topicName": {
+              "type": "string",
+              "title": "Topic Name",
+              "description": "11. Optional config-group-linking friendly field."
+            }
+          },
+          "required": ["queueName"],
+          "additionalProperties": false
         }
       },
-      "required": ["message", "retryCount", "enabled", "apiKey", "targetService"],
-      "additionalProperties": false
-    },
-    "icptest/automation_ui_config_test.auth": {
-      "type": "object",
-      "title": "icptest/automation_ui_config_test.auth",
-      "description": "10. Grouped section with required and optional auth/linking fields.",
-      "properties": {
-        "username": {
-          "type": "string",
-          "title": "Username",
-          "description": "11. Config-group-linking friendly field."
-        },
-        "password": {
-          "type": "string",
-          "title": "Password",
-          "description": "11. Config-group-linking friendly secret field.",
-          "format": "password",
-          "writeOnly": true,
-          "x-sensitive": true
-        },
-        "clientId": {
-          "type": "string",
-          "title": "Client ID",
-          "description": "11. Config-group-linking friendly field."
-        },
-        "clientSecret": {
-          "type": "string",
-          "title": "Client Secret",
-          "description": "11. Optional config-group-linking friendly secret field.",
-          "default": "",
-          "format": "password",
-          "writeOnly": true,
-          "x-sensitive": true
-        }
-      },
-      "required": ["username", "password", "clientId"],
-      "additionalProperties": false
-    },
-    "icptest/automation_ui_config_test.messaging": {
-      "type": "object",
-      "title": "icptest/automation_ui_config_test.messaging",
-      "description": "10. Grouped section with required and optional messaging fields.",
-      "properties": {
-        "queueName": {
-          "type": "string",
-          "title": "Queue Name",
-          "description": "11. Config-group-linking friendly field."
-        },
-        "topicName": {
-          "type": "string",
-          "title": "Topic Name",
-          "description": "11. Optional config-group-linking friendly field.",
-          "default": "automation.events"
-        }
-      },
-      "required": ["queueName"],
+      "required": ["message", "retryCount", "enabled", "apiKey", "targetService", "auth", "messaging"],
       "additionalProperties": false
     }
   },
-  "required": [
-    "icptest/automation_ui_config_test",
-    "icptest/automation_ui_config_test.auth",
-    "icptest/automation_ui_config_test.messaging"
-  ],
+  "required": ["icptest/automation_ui_config_test"],
   "additionalProperties": false
 }
