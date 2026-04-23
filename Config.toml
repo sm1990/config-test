@@ -1,0 +1,50 @@
+[icptest.automation_ui_config_test]
+# 1. Required top-level configs
+message = "Hello from the ICP config-form test project"
+retryCount = 3
+enabled = true
+
+# 2. Optional configs
+region = "eu-west-1"
+threshold = 0.90
+
+# 3. Secret config
+apiKey = "sk-test-1234567890"
+
+# 4. Enum-like config
+mode = "TEST"
+
+# 6. Map config
+labels = { team = "qa", env = "staging", scenario = "ui-form" }
+limits = { soft = 10, hard = 20 }
+
+# 7. Array config
+recipients = ["ops@example.com", "qa@example.com"]
+backoffSeconds = [2, 4, 8, 16]
+
+# 8. Array of records / structured array
+endpoints = [
+  { name = "users", url = "https://api.example.com/users", timeout = 15 },
+  { name = "orders", url = "https://api.example.com/orders", timeout = 30 }
+]
+
+# 9. Union / anyOf-style config
+correlationKey = 101
+audience = ["icp-ui-test", "automation-suite"]
+
+[icptest.automation_ui_config_test.targetService]
+# 5. Nested object config
+host = "localhost"
+port = 8080
+basePath = "/integration/api"
+
+[icptest.automation_ui_config_test.auth]
+# 10. Required-level grouping + 11. Config-group-linking friendly fields
+username = "qa-user"
+password = "qa-password-123"
+clientId = "ui-config-client"
+clientSecret = "client-secret-456"
+
+[icptest.automation_ui_config_test.messaging]
+queueName = "automation.queue"
+topicName = "automation.topic"

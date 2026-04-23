@@ -1,0 +1,231 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "ICP Automation UI Configuration Test Schema",
+  "type": "object",
+  "description": "Companion schema for the Ballerina configurable surface in this sample project. Module names are preserved as UI group keys.",
+  "properties": {
+    "icptest/automation_ui_config_test": {
+      "type": "object",
+      "title": "icptest/automation_ui_config_test",
+      "properties": {
+        "message": {
+          "type": "string",
+          "title": "Startup Message",
+          "description": "1. Required top-level string config."
+        },
+        "retryCount": {
+          "type": "integer",
+          "title": "Retry Count",
+          "description": "1. Required top-level integer config."
+        },
+        "enabled": {
+          "type": "boolean",
+          "title": "Enabled",
+          "description": "1. Required top-level boolean config."
+        },
+        "region": {
+          "type": "string",
+          "title": "Region",
+          "default": "us-east-1",
+          "description": "2. Optional string config with default."
+        },
+        "threshold": {
+          "type": "number",
+          "title": "Threshold",
+          "default": 0.75,
+          "description": "2. Optional decimal config with default."
+        },
+        "apiKey": {
+          "type": "string",
+          "title": "API Key",
+          "description": "3. Secret config.",
+          "format": "password",
+          "writeOnly": true,
+          "x-sensitive": true
+        },
+        "mode": {
+          "type": "string",
+          "title": "Mode",
+          "description": "4. Enum-like config.",
+          "default": "DEV",
+          "enum": ["DEV", "TEST", "PROD"]
+        },
+        "targetService": {
+          "type": "object",
+          "title": "Target Service",
+          "description": "5. Required nested object config.",
+          "properties": {
+            "host": {
+              "type": "string",
+              "title": "Host"
+            },
+            "port": {
+              "type": "integer",
+              "title": "Port"
+            },
+            "basePath": {
+              "type": "string",
+              "title": "Base Path"
+            }
+          },
+          "required": ["host", "port", "basePath"],
+          "additionalProperties": false
+        },
+        "labels": {
+          "type": "object",
+          "title": "Labels",
+          "description": "6. Map<string> config.",
+          "additionalProperties": {
+            "type": "string"
+          },
+          "default": {}
+        },
+        "limits": {
+          "type": "object",
+          "title": "Limits",
+          "description": "6. Map<int> config.",
+          "additionalProperties": {
+            "type": "integer"
+          },
+          "default": {}
+        },
+        "recipients": {
+          "type": "array",
+          "title": "Recipients",
+          "description": "7. Array config.",
+          "items": {
+            "type": "string"
+          },
+          "default": []
+        },
+        "backoffSeconds": {
+          "type": "array",
+          "title": "Backoff Seconds",
+          "description": "7. Integer array config.",
+          "items": {
+            "type": "integer"
+          },
+          "default": [1, 5, 10]
+        },
+        "endpoints": {
+          "type": "array",
+          "title": "Endpoints",
+          "description": "8. Structured array config.",
+          "items": {
+            "type": "object",
+            "properties": {
+              "name": {
+                "type": "string",
+                "title": "Name"
+              },
+              "url": {
+                "type": "string",
+                "title": "URL"
+              },
+              "timeout": {
+                "type": "integer",
+                "title": "Timeout (seconds)"
+              }
+            },
+            "required": ["name", "url", "timeout"],
+            "additionalProperties": false
+          },
+          "default": []
+        },
+        "correlationKey": {
+          "title": "Correlation Key",
+          "description": "9. Union of string or int.",
+          "default": "auto",
+          "oneOf": [
+            {
+              "type": "string"
+            },
+            {
+              "type": "integer"
+            }
+          ]
+        },
+        "audience": {
+          "title": "Audience",
+          "description": "9. Union of a single string or string array.",
+          "default": "icp-ui-test",
+          "oneOf": [
+            {
+              "type": "string"
+            },
+            {
+              "type": "array",
+              "items": {
+                "type": "string"
+              }
+            }
+          ]
+        }
+      },
+      "required": ["message", "retryCount", "enabled", "apiKey", "targetService"],
+      "additionalProperties": false
+    },
+    "icptest/automation_ui_config_test.auth": {
+      "type": "object",
+      "title": "icptest/automation_ui_config_test.auth",
+      "description": "10. Grouped section with required and optional auth/linking fields.",
+      "properties": {
+        "username": {
+          "type": "string",
+          "title": "Username",
+          "description": "11. Config-group-linking friendly field."
+        },
+        "password": {
+          "type": "string",
+          "title": "Password",
+          "description": "11. Config-group-linking friendly secret field.",
+          "format": "password",
+          "writeOnly": true,
+          "x-sensitive": true
+        },
+        "clientId": {
+          "type": "string",
+          "title": "Client ID",
+          "description": "11. Config-group-linking friendly field."
+        },
+        "clientSecret": {
+          "type": "string",
+          "title": "Client Secret",
+          "description": "11. Optional config-group-linking friendly secret field.",
+          "default": "",
+          "format": "password",
+          "writeOnly": true,
+          "x-sensitive": true
+        }
+      },
+      "required": ["username", "password", "clientId"],
+      "additionalProperties": false
+    },
+    "icptest/automation_ui_config_test.messaging": {
+      "type": "object",
+      "title": "icptest/automation_ui_config_test.messaging",
+      "description": "10. Grouped section with required and optional messaging fields.",
+      "properties": {
+        "queueName": {
+          "type": "string",
+          "title": "Queue Name",
+          "description": "11. Config-group-linking friendly field."
+        },
+        "topicName": {
+          "type": "string",
+          "title": "Topic Name",
+          "description": "11. Optional config-group-linking friendly field.",
+          "default": "automation.events"
+        }
+      },
+      "required": ["queueName"],
+      "additionalProperties": false
+    }
+  },
+  "required": [
+    "icptest/automation_ui_config_test",
+    "icptest/automation_ui_config_test.auth",
+    "icptest/automation_ui_config_test.messaging"
+  ],
+  "additionalProperties": false
+}

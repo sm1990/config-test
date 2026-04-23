@@ -1,0 +1,8 @@
+[package]
+org = "icptest"
+name = "automation_ui_config_test"
+version = "0.1.0"
+distribution = "2201.13.1"
+
+[build-options]
+observabilityIncluded = false
